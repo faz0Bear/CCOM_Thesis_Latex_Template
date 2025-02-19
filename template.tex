@@ -14,7 +14,7 @@
 \usepackage{zhnumber}
 \usepackage{enumitem}
 %\usepackage{parskip}
-
+\usepackage[hidelinks]{hyperref}
 %\setCJKmainfont[BoldFont={方正悠黑_GBK},ItalicFont={AR PL UKai CN}]{FandolSong}%{Noto Serif CJK SC}%
 %\setCJKmainfont{SimSun}%[BoldFont={方正悠黑_GBK},ItalicFont={AR PL UKai CN}]
 %\setCJKsansfont{方正悠黑_GBK}
@@ -128,10 +128,15 @@ blablabla
 
 \textbf{Key Words}: 
 chipichapa
+\clearpage  % 确保从新页开始
+% 目录页不显示页码
+\pagenumbering{gobble} 
 \tableofcontents
-\thispagestyle{empty}
+\clearpage  % 确保从新页开始
 
+% 从正文开始重新编号
 \pagenumbering{arabic}
+\setcounter{page}{1}
 \pagestyle{plain}
 
 \ctexset{chapter/numbering=true}
