@@ -38,14 +38,15 @@
 \renewcommand{\headrulewidth}{0pt} % 去除页眉横线
 \renewcommand{\footrulewidth}{0pt} % 如果页脚横线也不需要，可以设置为 0pt
 
+%导入加载图片库
 \usepackage{graphicx}
 \usepackage{multicol}
 
 \newcommand{\fixeduline}[2][8cm]{\uline{\makebox[#1]{#2}}}
 
 \newcommand{\degree}{硕}%博 / 硕
-\newcommand{\chititle}{中文标题}
-\newcommand{\chisubtitle}{——中文副标题}
+\newcommand{\chimaintitle}{中文标题}
+\newcommand{\chisubtitle}{——中文副标题} % 中文副标题 如果不用就去了 -> \newcommand{\chisubtitle}{}
 \newcommand{\engtitle}{English Title}
 
 %导入时间
@@ -114,7 +115,7 @@
 
 % 自定义 目录
 \setcounter{tocdepth}{4}
-\renewcommand{\contentsname}{\vspace*{-0.75em} \hfill \zihao{-2}\color{black}目\hspace*{0.75em}录 \hfill}  % 修改目录的标题
+\renewcommand{\contentsname}{\vspace*{-0.75em} \hfill \zihao{-2}\color{black}目\hspace*{0.75em}录 \hfill}  % 修改目录的标题 居中 小二 黑体
 
 \renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}} % 目录加省略号
 
@@ -155,9 +156,9 @@
 % 需结合计数器调整：
 \renewcommand{\thefootnote}{%
 	\ifnum\value{footnote}<11 
-	\raisebox{0.35ex}{\scalebox{0.75}{\ding{\numexpr 171+\value{footnote}}}}% 缩放符号 
+	\raisebox{0.35ex}{\scalebox{0.75}{\ding{\numexpr 171+\value{footnote}}}}% 缩放符号 ①~⑩
 	\else 
-	\textcircled{⑩\scriptsize\arabic{footnote}}% 超过11时改用其他方式
+	\textcircled{\scriptsize\arabic{footnote}}% 超过11时改用其他方式
 	\fi}
 
 
@@ -185,17 +186,14 @@
 	\addcontentsline{toc}{section}{\thesection \quad #1}
 }
 
-% 自定义 subsection 标题:第x节
-\renewcommand{\thesubsection}{第\chinesenumber{\value{subsection}}节}
+% 自定义 subsection 标题:第x小节 [可自行修改]
+\renewcommand{\thesubsection}{第\chinesenumber{\value{subsection}}小节}
 \titleformat{\subsection}%[block]
 {	
 	\raggedright
 	\songti
-	%\fontsize{12pt}{15pt}\selectfont
-	%\fontsize{15pt}{20pt}\selectfont
 	\zihao{-3}
-	%\bfseries
-	%\color{black}
+	\color{black}
 }
 {}{0em}{}
 \newcommand{\DIYsubsection}[1]{
@@ -209,9 +207,10 @@
 \usepackage{caption}
 \captionsetup{labelfont={rm, bf,color=black},textfont={rm,bf}}
 
-
+%图表脚注
 \usepackage{tablefootnote}
 
+%字体设置
 \newCJKfontfamily\huawenzhongsong{STZHONGS}[BoldFont=STZHONGS, Path=./fonts/, Extension=.TTF] %华文中宋
 \setmainfont{Times New Roman} % 设置西文字体 
 \setCJKmainfont[
@@ -264,7 +263,7 @@ BoldFont = SimHei
 		
 		\vspace{0.3cm}
 		
-		本人郑重声明：此处所提交的\degree 士学位论文《\chititle 》，是本人在导师指导下，在中央音乐学院攻读\degree 士学位期间独立进行研究工作所取得的成果。据本人所知，论文中除已注明部分外不包含他人已发表或撰写过的研究成果。对本文的研究工作做出重要贡献的个人和集体，均已在文中以明确方式注明并表示了谢意。本声明的法律结果将完全由本人承担。
+		本人郑重声明：此处所提交的\degree 士学位论文《\chimaintitle\chisubtitle》，是本人在导师指导下，在中央音乐学院攻读\degree 士学位期间独立进行研究工作所取得的成果。据本人所知，论文中除已注明部分外不包含他人已发表或撰写过的研究成果。对本文的研究工作做出重要贡献的个人和集体，均已在文中以明确方式注明并表示了谢意。本声明的法律结果将完全由本人承担。
 		
 		\begin{multicols}{2}
 			\vfill\null
@@ -287,7 +286,7 @@ BoldFont = SimHei
 		
 		\songti
 		
-		《\chititle 》系本人在中央音乐学院攻读\degree 士学位期间在导师指导下完成的\degree 士学位论文。本人完全了解中央音乐学院关于保存、使用学位论文的规定，同意学校保留并向有关部门送交论文的复印件和电子版本，允许论文被查阅和借阅。
+		《\chimaintitle\chisubtitle》系本人在中央音乐学院攻读\degree 士学位期间在导师指导下完成的\degree 士学位论文。本人完全了解中央音乐学院关于保存、使用学位论文的规定，同意学校保留并向有关部门送交论文的复印件和电子版本，允许论文被查阅和借阅。
 		
 		本人授权中央音乐学院，可以将本论文提交中国学术期刊（光盘版）电子杂志社在《中国优秀博硕士学位论文数据库》中发表，可以采用影印、缩印或扫描等复制手段保存学位论文。
 		
@@ -316,8 +315,6 @@ BoldFont = SimHei
 		~~~~~~~~~~~~~~~
 		%\textbf{导师签名: }\raisebox{-0.25\height}{\includegraphics[width=0.125\columnwidth]{figures/signatures/yuyuan.pdf}} %\quad \raisebox{-0.25\height}{\includegraphics[width=1.75cm, height=1.15cm ]{figures/signatures/dls.pdf}} %二位导师签名
 		%\par
-		%\hspace{1cm}
-		
 		%\hspace*{5em} \textbf{\the\year~年~\the\month~月~\the\day~日}  \textbf{\the\year~年~\the\month~月~\the\day~日}
 		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	}
@@ -450,7 +447,10 @@ BoldFont = SimHei
 	\addchapter{总结}
 	
 	\newpage
-	
+ 	
+	%使用GB-T 7714生成参考文献目录（要改）[仅在参考文献调试的时候配合\cite{}使用]
+	%\bibliography{ref}
+ 	
 	\addchapter*{参考文献}
 	\addcontentsline{toc}{chapter}{参考文献}
 	\setlist[enumerate, 1]{itemindent= 0em, left=0em, labelsep=0.35em, itemsep=0.5em, label=\arabic*.}
