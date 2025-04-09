@@ -59,6 +59,7 @@
 %表格
 \usepackage{longtable}
 \usepackage{multirow}
+\usepackage{booktabs}
 
 %导入中文文献引用标准 GB/T 7714
 \usepackage{gbt7714}
@@ -246,7 +247,7 @@ BoldFont = SimHei
 				所在系部：\fixeduline{音乐人工智能与音乐信息科技}\\
 				研究方向：\fixeduline{音乐人工智能与音乐信息科技}\\
 				导师姓名：\fixeduline{YF~教授、XXX~教授}\\
-				提交时间：\fixeduline{2025年05月}\\
+				提交时间：\fixeduline{20XX年04月}\\
 			}
 		\end{center}
 		
@@ -265,7 +266,7 @@ BoldFont = SimHei
 		
 		\vspace{0.3cm}
 		
-		本人郑重声明：此处所提交的\degree 士学位论文《\chimaintitle\chisubtitle》，是本人在导师指导下，在中央音乐学院攻读\degree 士学位期间独立进行研究工作所取得的成果。据本人所知，论文中除已注明部分外不包含他人已发表或撰写过的研究成果。对本文的研究工作做出重要贡献的个人和集体，均已在文中以明确方式注明并表示了谢意。本声明的法律结果将完全由本人承担。
+		本人郑重声明：此处所提交的\degree 士学位论文\underline{\,《\kaishu \chimaintitle\chisubtitle》}，是本人在导师指导下，在中央音乐学院攻读\degree 士学位期间独立进行研究工作所取得的成果。据本人所知，论文中除已注明部分外不包含他人已发表或撰写过的研究成果。对本文的研究工作做出重要贡献的个人和集体，均已在文中以明确方式注明并表示了谢意。本声明的法律结果将完全由本人承担。
 		
 		\begin{multicols}{2}
 			\vfill\null
@@ -288,7 +289,38 @@ BoldFont = SimHei
 		
 		\songti
 		
-		《\chimaintitle\chisubtitle》系本人在中央音乐学院攻读\degree 士学位期间在导师指导下完成的\degree 士学位论文。本人完全了解中央音乐学院关于保存、使用学位论文的规定，同意学校保留并向有关部门送交论文的复印件和电子版本，允许论文被查阅和借阅。
+		\underline{\,《\kaishu \chimaintitle\chisubtitle》}系本人在中央音乐学院攻读\degree 士学位期间在导师指导下完成的\degree 士学位论文。本人完全了解中央音乐学院关于保存、使用学位论文的规定，同意学校保留并向有关部门送交论文的复印件和电子版本，允许论文被查阅和借阅。
+		
+		\begin{multicols}{2}
+			\vfill\null
+			%\columnbreak
+			\heiti{作者签名:}~~~~%\raisebox{-0.25\height}{\includegraphics[width=1.25cm, height=0.65cm ]{figures/signatures/sy.pdf}} %括号里是作者电子签
+			
+			\vspace*{0.3cm}
+			\hfill \heiti{\the\year~年~\the\month~月~\the\day~日}
+			\vfill
+			
+			\columnbreak
+			
+			\vfill\null
+			
+			\heiti{导师签名: }\raisebox{-0.35\height}{\includegraphics[width=1.75cm, height=1cm ]{figures/signatures/yuyuan.pdf}} \quad %\raisebox{-0.25\height}{\includegraphics[width=1.75cm, height=1cm ]{figures/signatures/dls.pdf}} %二位导师签名
+			
+			\vspace*{0.3cm}
+			\hfill \heiti{\the\year~年~\the\month~月~\the\day~日}
+			
+			\vfill
+		\end{multicols}
+		
+		\vfill
+		
+		{
+			\centering 
+			\fontsize{16pt}{16pt}
+			\heiti{中央音乐学院\degree 士学位论文使用授权书}\par
+		}
+		
+		\vspace{0.3cm}
 		
 		本人授权中央音乐学院，可以将本论文提交中国学术期刊（光盘版）电子杂志社在《中国优秀博硕士学位论文数据库》中发表，可以采用影印、缩印或扫描等复制手段保存学位论文。
 		
@@ -372,7 +404,7 @@ BoldFont = SimHei
 		\label{fig:1.1}  % 图片标签
 	\end{figure}
 	
-	使用“\textbf{$\backslash \text{ref\{fig:1.x\}}$}"引用公式\ref{fig:1.1}。
+	使用“\textbf{$\backslash \text{ref\{fig:1.x\}}$}"引用公式\ref{fig:1.1}。使用$\backslash \text{toprule}[\text{1.5pt}]$和$\backslash \text{bottomrule}[\text{1.5pt}]$来定义表格顶部和底部的线宽，使用$\backslash \text{midrule}[\text{0.75pt}]$定义中间线宽，以此基准制作三线格。可使用$\backslash \text{cmidrule}[{line\ width}]\{{number}_1-{number}_2\}$自定义线宽和占据的格数，如表\ref{tab:1.2}第三行所示。
 	
 	% 这是表格
 	\begin{table}[h]
@@ -380,8 +412,8 @@ BoldFont = SimHei
 		\caption{表格标题}
 		\vspace*{-1em}
 		\begin{tabular}{ccccccc}
-			\hline
-			Pitch (MIDI) & Onset & Duration  & String & Position & Finger & Type \\ \hline
+			\toprule[1.5pt]
+			Pitch (MIDI) & Onset & Duration  & String & Position & Finger & Type \\ \midrule[0.75pt]
 			64           & 0     & 2         & 2 	  & 1 		 & 2 	  & 1 \\
 			69           & 2     & 2         & 2 	  & 3		 & 3 	  & 1 \\
 			73           & 0     & 3         & 2 	  & 3 		 & 5 	  & 1 \\
@@ -393,7 +425,8 @@ BoldFont = SimHei
 			66           & 3     & 0.5       & 2 	  & 2 		 & 2 	  & 1 \\
 			68           & 3.5   & 0.5       & 2 	  & 2 		 & 3 	  & 1 \\
 			69           & 0     & 3         & 2 	  & 2 		 & 4 	  & 1 \\
-			64           & 3     & 1         & 2 	  & 1 		 & 2 	  & 1 \\ \hline
+			64           & 3     & 1         & 2 	  & 1 		 & 2 	  & 1 \\ 
+			\bottomrule[1.5pt]
 		\end{tabular}
 		\label{tab:1.1}
 	\end{table}
@@ -418,13 +451,13 @@ BoldFont = SimHei
 		\caption{人体姿态估计模型性能对比}
 		\vspace*{-1em}
 		\begin{tabular}{ccccc} %{|c|c|c|c|c|c|c|}%
-			\hline 
-			模型   &  平均精度(AP) & 手部检测优化 & 实时性 & 模型大小 \\ \hline
+			\toprule[1.5pt]
+			模型   &  平均精度(AP) & 手部检测优化 & 实时性 & 模型大小 \\ \midrule[0.75pt]
 			DWPose\footnotemark[1]{}    & 0.665      & \checkmark                 & 中高       & 轻量级         \\
 			RTMPose\footnotemark{}     & 0.653      & $\times$                & 高      &  中等          \\
-			OpenPose\footnotemark{}    & 0.600        & $\times$                & 底       &  较大            \\
+			OpenPose\footnotemark{}    & 0.600        & $\times$                & 底       &  较大            \\ \cmidrule[0.5pt]{1-2}
 			MediaPipe\footnotemark{}     & /      &  \checkmark                 & 极高       &  极小        \\
-			\hline
+			\bottomrule[1.5pt]
 		\end{tabular}
 		\label{tab:1.2}
 	\end{table}
