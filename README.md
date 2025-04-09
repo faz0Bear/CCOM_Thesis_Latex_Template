@@ -1,6 +1,6 @@
 # CCOM_Thesis_Latex_Template
 
-![]([https://example.com/path/to/your/image.jpg](./figures/ccom/ccom_logo.svg))
+![](./figures/ccom/ccom_logo.svg)
 
 Latex template for CCOM graduate thesis
 
