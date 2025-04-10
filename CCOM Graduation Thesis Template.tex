@@ -505,8 +505,10 @@ BoldFont = SimHei
 	
 	%绪论
 	\addchapter*{绪\quad 论}
+	请在此处写绪论。
 	
 	\DIYsection{研究背景与意义}
+	应该研究什么问题呢？
 	
 	\newpage
 	
@@ -567,7 +569,10 @@ BoldFont = SimHei
 	
 	\newpage
 	
-	如表\ref{tab:1.2}所示，展示一下表格内脚注的使用方法“$\backslash \text{footnotemark} [ 1 ]\{\}$”和“$\backslash \text{addtocounter} \backslash \text{\{footnote\}\{1\}}$”以及“$\backslash \text{footnotetext\{\}}$”，假设已经提到了DWPose\footnote{Zhendong Yang, Ailing Zeng, Chun Yuan, et al., “Effective Whole-body Pose Estimation with Two-stages Distillation”, Proceedings of the 2023 IEEE/CVF International Conference on Computer Vision Workshops, 2023, pp. 4212-4222.}。
+	如表\ref{tab:1.2}所示，展示一下表格内脚注的使用方法：“$\backslash \text{footnotemark}\{\}$”和“$\backslash \text{footnotetext\{\}}$”以及“$\backslash \text{addtocounter} \backslash \text{\{footnote\}\{1\}}$”，假设已经提到了DWPose\footnote{Zhendong Yang, Ailing Zeng, Chun Yuan, et al., “Effective Whole-body Pose Estimation with Two-stages Distillation”, Proceedings of the 2023 IEEE/CVF International Conference on Computer Vision Workshops, 2023, pp. 4212-4222.}。$\backslash \text{footnotemark} [ 1 ]\{\}$中的方括号[]如果带有数字（如[1]），则搭配$\backslash \text{setcounter\{footnote\}\{}\mathnormal{num}\text{\}}$使用时，脚注上标从$num$开始；反之，不使用[]时，则从$num+1$开始。
+	
+	PyTorch\footnote{PyTorch官网用户手册:\href{https://pytorch.org/docs/stable/index.html}{https://pytorch.org/docs/stable/index.html}}是一个用于机器学习和深度学习的开源深度学习框架，由Meta(Facebook)于2016年发布。以此为例展示混编脚注和脚注超链接功能（使用$\backslash \text{href\{URL\}\{text\}}$表示），将鼠标移到下方脚注\footnotemark[2]{}或者移动到后面的链接位置，都可以点击链接弹出浏览器转到相关页面。链接：\href{https://pytorch.org/docs/stable/index.html}{https://pytorch.org/docs/stable/index.html}
+	
 	
 	\begin{table}[H]
 		\centering
@@ -576,8 +581,10 @@ BoldFont = SimHei
 		\begin{tabular}{ccccc} %{|c|c|c|c|c|c|c|}%
 			\toprule[1.5pt]
 			模型   &  平均精度(AP) & 手部检测优化 & 实时性 & 模型大小 \\ \midrule[0.75pt]
-			DWPose\footnotemark[1]{}    & 0.665      & \checkmark                 & 中高       & 轻量级         \\
-			RTMPose\footnotemark{}     & 0.653      & $\times$                & 高      &  中等          \\
+			\setcounter{footnote}{1}
+			DWPose\footnotemark[2]{}    & 0.665      & \checkmark                 & 中高       & 轻量级         \\
+			\setcounter{footnote}{3}
+			RTMPose\footnotemark[1]{}     & 0.653      & $\times$                & 高      &  中等          \\
 			OpenPose\footnotemark{}    & 0.600        & $\times$                & 底       &  较大            \\ \cmidrule[0.5pt]{1-2}
 			MediaPipe\footnotemark{}     & /      &  \checkmark                 & 极高       &  极小        \\
 			\bottomrule[1.5pt]
@@ -589,7 +596,7 @@ BoldFont = SimHei
 	%\footnotetext{Zhendong Yang, Ailing Zeng, Chun Yuan, et al., “Effective Whole-body Pose Estimation with Two-stages Distillation”, Proceedings of the 2023 IEEE/CVF International Conference on Computer Vision Workshops, 2023, pp. 4212-4222.}
 	
 	%RTMPose
-	\setcounter{footnote}{2}
+	\setcounter{footnote}{3}
 	\footnotetext{Tao Jiang, Peng Lu, Li Zhang, et al., “RTMPose: Real-Time Multi-Person Pose Estimation based on MMPose”, arXiv:2303.07399, 2023, pp. 1-11.}
 	
 	%OpenPose
@@ -603,6 +610,7 @@ BoldFont = SimHei
 	\newpage
 	
 	\addchapter*{结\quad 论}
+	请在此处写本文的结论。
 	
 	\newpage
  	
@@ -626,11 +634,14 @@ BoldFont = SimHei
 		Eita Nakamura, Yasuyuki Saito, Kazuyoshi Yoshii, “Statistical learning and estimation of piano fingering”,
 		Information Sciences, 2020(517). pp. 68-85.
 	\end{enumerate}
-
+	
 	
 	\newpage
 	
 	% 致谢/后记
 	\addchapter*{致\quad 谢}
+	请在此处写致谢/后记。
+	
+	如：感谢你，CCOM！醇亲王府.mp3 央音喷泉.wav
 	
 \end{document}
