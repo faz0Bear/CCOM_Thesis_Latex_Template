@@ -160,26 +160,11 @@
 
 \setlength{\cftsecindent}{3em}  % 设置 section 的缩进为 3.5em
 \setlength{\cftsubsecindent}{5em}  % 设置 subsection 的缩进
-\setlength{\cftsubsubsecindent}{7.5em}  % 设置 subsection 的缩进
+\setlength{\cftsubsubsecindent}{7em}  % 设置 subsection 的缩进
 
 \setlength{\cftsecnumwidth}{4em}  % 设置章节编号宽度
 \setlength{\cftsubsecnumwidth}{4em}  % 设置子章节编号宽度
 \setlength{\cftsubsubsecnumwidth}{4em}  % 设置子章节编号宽
-
-%判断目录的奇偶数页来进行分页
-\usepackage{zref}
-%\zref@require@module{savepos} % 启用模块
-%\usepackage{zref-abspage}  % 获取绝对页码 
-\usepackage{afterpage}     % 延迟执行分页操作 
-\makeatletter 
-\newcommand{\checktocpage}{%
-	\ifodd\zref@extract{tocend}{abspage}  % 判断是否为奇数页 
-	\newpage                              % 插入分页 
-	\thispagestyle{empty}                % 空白页无页眉页脚 
-	\mbox{}                              % 空内容占位 
-	\fi 
-}
-\makeatother 
 
 % 超链接
 \usepackage{xcolor}
