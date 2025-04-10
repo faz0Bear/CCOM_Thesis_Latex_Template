@@ -1,5 +1,13 @@
 % !TEX program = xelatex
 
+% 定义一个条件判断变量：打印模式
+\newif\ifprint
+
+% 设置是否打印，如果打印则执行 A 部分，否则执行 B 部分
+% 如果你希望打印，可以取消注释这一行
+\printtrue
+
+
 \documentclass[a4paper,scheme=chinese,linespread=1.5]{ctexbook} % 行距固定值20磅
 \usepackage[a4paper, top=2.54cm, bottom=2.54cm, left=3.18cm, right=3.18cm]{geometry} %页边距 左右3.18cm 上下2.54cm
 \setlength{\parskip}{0pt}  % 手动控制段落间距 
@@ -74,40 +82,68 @@
 	\ifcase#1 零 \or 一\or 二\or 三\or 四\or 五\or 六\or 七\or 八\or 九\or 十\fi
 }
 
+%重置章节序号
+\newcommand{\resetchapternum}{
+	%\stepcounter{chapter}
+	\setcounter{section}{0}
+	\setcounter{subsection}{0}
+	\setcounter{subsubsection}{0}
+	\phantomsection
+}
+
 %\usepackage{ctex}
 %\ctexset{chapter/name={第,章}, chapter/font=\Large\bfseries}
+
+\NewDocumentCommand{\addabstract}{s m}{%
+	\IfBooleanTF{#1}
+	{
+		%\addabstract*
+		{		
+			\begin{center}
+				\zihao{-2} \bfseries #2
+			\end{center}
+			\addcontentsline{toc}{chapter}{英文摘要}
+			
+		}
+	} % * 英文标题样式
+	{
+		%\addabstract
+		\stepcounter{chapter}
+		{
+			\begin{center}
+				\zihao{-2} \heiti #2
+			\end{center} 
+			\addcontentsline{toc}{chapter}{中文摘要}
+			
+		}
+	} % 中文标题样式
+	
+	%设置chapter序号从0开始
+	\setcounter{chapter}{0}
+}
 
 \NewDocumentCommand{\addchapter}{s m}{%
 	\IfBooleanTF{#1}
 	{
-		%\chapter*
+		%\addchapter*
 		{
-			\centering
-			\heiti
-			\zihao{-2}
-			\hspace*{-0.75em}
-			\selectfont #2
-			\vspace*{1em}
-
-			
+			\begin{center}
+				\zihao{-2} \heiti  #2
+			\end{center}
 		}
-	} % * 不放进目录
+		\addcontentsline{toc}{chapter}{#2}
+	} % * 不增加章
 	{
-		%\chapter*
+		%\addchapter
 		\stepcounter{chapter}
 		{
-			\zihao{-2}
-			\vspace*{-0.75em}
 			\begin{center}
-				第\chinesenumber{\value{chapter}}章、#2
+				\zihao{-2} \songti 第\chinesenumber{\value{chapter}}章、#2
 			\end{center}
-			\vspace*{-1em}
 		}
-		%\vspace*{-\baselineskip}
-		
-		\addcontentsline{toc}{chapter}{#2}
-		
-	} % 放进目录
+		\addcontentsline{toc}{chapter}{第\chinesenumber{\value{chapter}}章\quad #2}
+	} % 增加章
+	\resetchapternum
 }
 
 %页面设置
@@ -118,17 +154,32 @@
 
 % 自定义 目录
 \setcounter{tocdepth}{4}
-\renewcommand{\contentsname}{\vspace*{-0.75em} \hfill \zihao{-2}\color{black}目\hspace*{0.75em}录 \hfill}  % 修改目录的标题 居中 小二 黑体
+\renewcommand{\contentsname}{\vspace*{-0.75em} \hfill \zihao{-2}\color{black}目~~~录 \hfill}  % 修改目录的标题 居中 小二 黑体
 
 \renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}} % 目录加省略号
 
-\setlength{\cftsecindent}{3.5em}  % 设置 section 的缩进为 3.5em
-\setlength{\cftsubsecindent}{5.5em}  % 设置 subsection 的缩进
+\setlength{\cftsecindent}{3em}  % 设置 section 的缩进为 3.5em
+\setlength{\cftsubsecindent}{5em}  % 设置 subsection 的缩进
 \setlength{\cftsubsubsecindent}{7.5em}  % 设置 subsection 的缩进
 
 \setlength{\cftsecnumwidth}{4em}  % 设置章节编号宽度
 \setlength{\cftsubsecnumwidth}{4em}  % 设置子章节编号宽度
 \setlength{\cftsubsubsecnumwidth}{4em}  % 设置子章节编号宽
+
+%判断目录的奇偶数页来进行分页
+\usepackage{zref}
+%\zref@require@module{savepos} % 启用模块
+%\usepackage{zref-abspage}  % 获取绝对页码 
+\usepackage{afterpage}     % 延迟执行分页操作 
+\makeatletter 
+\newcommand{\checktocpage}{%
+	\ifodd\zref@extract{tocend}{abspage}  % 判断是否为奇数页 
+	\newpage                              % 插入分页 
+	\thispagestyle{empty}                % 空白页无页眉页脚 
+	\mbox{}                              % 空内容占位 
+	\fi 
+}
+\makeatother 
 
 % 超链接
 \usepackage{xcolor}
@@ -189,8 +240,8 @@
 	\addcontentsline{toc}{section}{\thesection \quad #1}
 }
 
-% 自定义 subsection 标题:第x小节 [可自行修改]
-\renewcommand{\thesubsection}{第\chinesenumber{\value{subsection}}小节}
+% 自定义 subsection 标题: 一、二、三... [可自行修改]
+\renewcommand{\thesubsection}{\chinesenumber{\value{subsection}}}
 \titleformat{\subsection}%[block]
 {	
 	\raggedright
@@ -202,7 +253,7 @@
 \newcommand{\DIYsubsection}[1]{
 	\stepcounter{subsection}
 	\subsection*{\thesubsection、#1}
-	\addcontentsline{toc}{subsection}{\quad #1}
+	\addcontentsline{toc}{subsection}{\thesubsection、#1}
 }
 
 
@@ -252,6 +303,16 @@ BoldFont = SimHei
 		\end{center}
 		
 	\end{titlepage}
+	
+	\ifprint
+	% 如果是打印模式，判断是否需要加一页
+		\newpage
+		\null\
+		\thispagestyle{empty} % 禁用页码
+		\newpage
+	\else
+	% 如果不是打印模式，则不改变
+	\fi
 	
 	% TODO 论文原创性声明和使用授权书
 	{\large
@@ -353,33 +414,98 @@ BoldFont = SimHei
 		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	}
 	
+	\ifprint
+	% 如果是打印模式，判断是否需要加一页
+		\newpage
+		\null\
+		\thispagestyle{empty} % 禁用页码
+		\newpage
+	\else
+	% 如果不是打印模式，则不改变
+	\fi
+	
 	\newpage
 	
 	% 中文摘要
 	\pagenumbering{Roman}
+	\fancyfoot[C]{\thepage}
 	\setcounter{page}{1}
 	
-	\addchapter*{论文摘要}
-	\addcontentsline{toc}{chapter}{中文摘要}
+	\addabstract{论文摘要}
 	阿巴阿巴
 	
+	\bigskip
 	\textbf{关键词}: 
 	chipichapa；tibodiibo
+	
+	\ifprint
+	% 如果是打印模式，判断是否需要加一页
+	\afterpage{% 延迟执行页码判断 奇数就增加一页空白页，偶数不动
+		\ifodd\value{page}
+		\else
+		\newpage
+		\null\
+		\thispagestyle{empty} % 禁用页码
+		\newpage
+		\setcounter{page}{\value{page}-1}
+		\fi
+		
+	}
+	\else
+	% 如果不是打印模式，则不改变
+	\fi
 	
 	\newpage
 	
 	% 英文摘要
-	\addchapter*{\textbf{Abstract}}
-	\addcontentsline{toc}{chapter}{英文摘要}
+	%\fancyhf{}
+	\addabstract*{\textbf{Abstract}}
+	%\value{page}
 	blablabla
 	
+	\bigskip
 	\textbf{Key Words}: 
 	chipichapa; tibodiibo
 	
+	\ifprint
+	% 如果是打印模式，判断是否需要加一页
+	\afterpage{% 延迟执行页码判断 奇数就增加一页空白页，偶数不动
+		\ifodd\value{page}
+		\else
+		\newpage
+		\null\
+		\thispagestyle{empty} % 禁用页码
+		\newpage
+		\setcounter{page}{\value{page}-1}
+		\fi
+		
+	}
+	\else
+	% 如果不是打印模式，则不改变
+	\fi
+	
 	\newpage
 	
-	%目录
+	
+	%生成目录
 	\tableofcontents
+	
+	\ifprint
+	% 如果是打印模式，判断是否需要加一页
+		\afterpage{% 延迟执行页码判断 奇数就增加一页空白页，偶数不动
+			\ifodd\value{page}
+			\else
+			\newpage
+			\null\
+			\thispagestyle{empty} % 禁用页码
+			\newpage
+			\setcounter{page}{\value{page}-1}
+			\fi
+			
+		}
+	\else
+	% 如果不是打印模式，则不改变
+	\fi
 	
 	\newpage
 	
@@ -390,9 +516,18 @@ BoldFont = SimHei
 	\setcounter{page}{1}
 	
 	%绪论
-	\addchapter{绪论}
+	\addchapter*{绪\quad 论}
 	
 	\DIYsection{研究背景与意义}
+	
+	\newpage
+	
+	\addchapter{这是“第一章”：一级标题chapter}
+	
+	\DIYsection{这是“第一节”：二级标题section}
+	
+	\DIYsubsection{这是“一、”：三级标题subsection}
+
 	
 	脚注这样标\footnote{李伟、王鑫主编：《音频音乐与计算机的交融——音频音乐技术2》，上海：复旦大学出版社，2022年，第252-270页。}。
 	
@@ -479,7 +614,7 @@ BoldFont = SimHei
 	
 	\newpage
 	
-	\addchapter{总结}
+	\addchapter*{结\quad 论}
 	
 	\newpage
  	
@@ -487,33 +622,29 @@ BoldFont = SimHei
 	%\bibliography{ref}
  	
 	\addchapter*{参考文献}
-	\addcontentsline{toc}{chapter}{参考文献}
-	\setlist[enumerate, 1]{itemindent= 0em, left=0em, labelsep=0.35em, itemsep=0.5em, label=\arabic*.}
+	%\setlist[enumerate, 1]{itemindent= 0em, left=0em, labelsep=0.35em, itemsep=0.5em, label=\arabic*.}
+	%\begin{enumerate}
+	\DIYsubsection{中文参考文献}
+	\setlist[enumerate, 1]{itemindent=0em, left=2em, labelsep=0em, label=\arabic*.\ , itemsep=0.1em}
 	\begin{enumerate}
-		\item [] 一、中文参考文献 \par
-		\addcontentsline{toc}{section}{一、中文参考文献}
-		\setlist[enumerate, 2]{itemindent=0em, left=2em, labelsep=0em, label=\arabic*.\ , itemsep=0.1em}
-		\begin{enumerate}
-			\item 
-			李伟、王鑫主编：《音频音乐与计算机的交融——音频音乐技术2》，上海：复旦大学出版社，2022年，第252-270页。
-			
-			
-		\end{enumerate}
+		\item 
+		李伟、王鑫主编：《音频音乐与计算机的交融——音频音乐技术2》，上海：复旦大学出版社，2022年，第252-270页。
 		
-		\item [] 二、英文参考文献 \par
-		\addcontentsline{toc}{section}{二、英文参考文献}
-		\setlist[enumerate, 2]{itemindent=0em, left=2em, labelsep=0em, label=\arabic*.\ , itemsep=0.1em}
-		\begin{enumerate}
-			\item 
-			Eita Nakamura, Yasuyuki Saito, Kazuyoshi Yoshii, “Statistical learning and estimation of piano fingering”,
-			Information Sciences, 2020(517). pp. 68-85.
-		\end{enumerate}
+		
 	\end{enumerate}
+	
+	\DIYsubsection{英文参考文献}
+	\setlist[enumerate, 1]{itemindent=0em, left=2em, labelsep=0em, label=\arabic*.\ , itemsep=0.1em}
+	\begin{enumerate}
+		\item 
+		Eita Nakamura, Yasuyuki Saito, Kazuyoshi Yoshii, “Statistical learning and estimation of piano fingering”,
+		Information Sciences, 2020(517). pp. 68-85.
+	\end{enumerate}
+	%\end{enumerate}
 	
 	\newpage
 	
 	% 致谢/后记
-	\addchapter*{致谢}
-	\addcontentsline{toc}{chapter}{致谢}
+	\addchapter*{致\quad 谢}
 	
 \end{document}
