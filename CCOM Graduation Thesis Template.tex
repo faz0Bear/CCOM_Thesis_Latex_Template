@@ -169,6 +169,27 @@
 %分页
 \usepackage{afterpage}
 
+%打印时增加页数
+\usepackage{xstring}
+\newcounter{Romancounter}
+\newcounter{CalcPageDiff}
+\newcommand{\RomannumToArabic}[1]{%
+	\setcounter{Romancounter}{0}%
+	\IfStrEqCase{#1}{%
+		{I}{\setcounter{Romancounter}{1}}%
+		{II}{\setcounter{Romancounter}{2}}%
+		{III}{\setcounter{Romancounter}{3}}%
+		{IV}{\setcounter{Romancounter}{4}}%
+		{V}{\setcounter{Romancounter}{5}}%
+		{VI}{\setcounter{Romancounter}{6}}%
+		{VII}{\setcounter{Romancounter}{7}}%
+		{VIII}{\setcounter{Romancounter}{8}}%
+		{IX}{\setcounter{Romancounter}{9}}%
+		{X}{\setcounter{Romancounter}{10}}%
+	}[\PackageWarning{Romconvert}{Invalid input: #1}]%
+	%\arabic{Romancounter}%
+}
+
 % 超链接
 \usepackage{xcolor}
 \usepackage{hyperref}
@@ -258,7 +279,6 @@
 \setCJKmainfont[
 BoldFont = SimHei
 ]{SimSun}       % 设置中文字体为宋体 
-
 
 
 
@@ -403,7 +423,7 @@ BoldFont = SimHei
 	}
 	
 	\ifprint
-	% 如果是打印模式，判断是否需要加一页
+	% 如果是打印模式，判断是否需要加一
 		\newpage
 		\null\
 		\thispagestyle{empty} % 禁用页码
@@ -418,24 +438,36 @@ BoldFont = SimHei
 	\pagenumbering{Roman}
 	\fancyfoot[C]{\thepage}
 	\setcounter{page}{1}
-	
+	%定义中文摘要开头
+	\label{chinese_abstract_start}
 	\addabstract{论文摘要}
-	这里写中文摘要。
+	{
+		这里写中文摘要。 
+		
+		
+		\bigskip
+		\textbf{关键词}: %中文关键词，用；隔开，3~6个为宜
+		音乐；深度学习；神经网络
+	}
 	
-	\bigskip
-	\textbf{关键词}: %中文关键词，用；隔开，3~6个为宜
-	音乐；深度学习；神经网络
-	
+	%定义中文摘要结尾
+	\label{chinese_abstract_end}
 	\ifprint
 	% 如果是打印模式，判断是否需要加一页
-	\afterpage{% 延迟执行页码判断 奇数就增加一页空白页，偶数不动
-		\ifodd\value{page}
+	\afterpage{% 延迟执行页码判断 页码差为奇数就增加一页空白页，偶数不动
+		\RomannumToArabic{\getpagerefnumber{chinese_abstract_end}}
+		\setcounter{CalcPageDiff}{\value{Romancounter}}
+		\RomannumToArabic{\getpagerefnumber{chinese_abstract_start}}
+		\addtocounter{CalcPageDiff}{-\value{Romancounter}}		
+		
+		\ifodd \arabic{CalcPageDiff}
+			
 		\else
-		\newpage
-		\null\
-		\thispagestyle{empty} % 禁用页码
-		\newpage
-		\setcounter{page}{\value{page}-1}
+			\newpage
+			\null\
+			\thispagestyle{empty} % 禁用页码
+			\newpage
+			\setcounter{page}{\value{page}-1}
 		\fi
 		
 	}
@@ -446,17 +478,32 @@ BoldFont = SimHei
 	\newpage
 	
 	% 英文摘要
+	%定义英文摘要开头
+	\newcommand{\EnglishAbstractStart}{\arabic{page}}
+	\label{english_abstract_start}
 	\addabstract*{\textbf{Abstract}}
-	Write an English abstract here.
+	{
+		Write an English abstract here.
+		
+		
+		\bigskip
+		\textbf{Key Words}: % 英文关键词，首字母大写，用;隔开
+		Music; Deep Learning; Neural Network
+	}
 	
-	\bigskip
-	\textbf{Key Words}: % 英文首字母大写，用;隔开
-	Music; Deep Learning; Neural Network
-	
+	%定义英文摘要结尾
+	\newcommand{\EnglishAbstractEnd}{\arabic{page}}
+	\label{english_abstract_end}
 	\ifprint
 	% 如果是打印模式，判断是否需要加一页
-	\afterpage{% 延迟执行页码判断 奇数就增加一页空白页，偶数不动
-		\ifodd\value{page}
+	\afterpage{% 延迟执行页码判断 页码差为奇数就增加一页空白页，偶数不动
+		\RomannumToArabic{\getpagerefnumber{english_abstract_end}}
+		\setcounter{CalcPageDiff}{\value{Romancounter}}
+		\RomannumToArabic{\getpagerefnumber{english_abstract_start}}
+		\addtocounter{CalcPageDiff}{-\value{Romancounter}}		
+		
+		\ifodd \arabic{CalcPageDiff}
+		
 		\else
 		\newpage
 		\null\
@@ -472,14 +519,20 @@ BoldFont = SimHei
 	
 	\newpage
 	
-	
 	%生成目录
+	\label{contents_start}
 	\tableofcontents
+	\label{contents_end}
 	
 	\ifprint
 	% 如果是打印模式，判断是否需要加一页
 		\afterpage{% 延迟执行页码判断 奇数就增加一页空白页，偶数不动
-			\ifodd\value{page}
+			\RomannumToArabic{\getpagerefnumber{contents_start}}
+			\setcounter{CalcPageDiff}{\value{Romancounter}}
+			\RomannumToArabic{\getpagerefnumber{contents_end}}
+			\addtocounter{CalcPageDiff}{-\value{Romancounter}}		
+			
+			\ifodd \arabic{CalcPageDiff}
 			\else
 			\newpage
 			\null\
@@ -608,7 +661,9 @@ BoldFont = SimHei
 	\newpage
 	
 	\addchapter*{结\quad 论}
-	请在此处写本文的结论。
+	{
+		请在此处写本文的结论。
+	}
 	
 	\newpage
  	
@@ -638,8 +693,11 @@ BoldFont = SimHei
 	
 	% 致谢/后记
 	\addchapter*{致\quad 谢}
-	请在此处写致谢/后记。
+	{
+		请在此处写致谢/后记。
+		
+		如：感谢你，CCOM！课比天大！醇亲王府.mp3、央音喷泉.wav。
+	}
 	
-	如：感谢你，CCOM！课比天大！醇亲王府.mp3、央音喷泉.wav。
 	
 \end{document}
