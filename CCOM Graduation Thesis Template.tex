@@ -70,13 +70,38 @@
 \usepackage{gbt7714}
 \bibliographystyle{gbt7714-numerical}
 
+% 画表格或者画其他东西用
+\usepackage{tikz}
+
+%tikz库画圈
 \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
 		\node[shape=circle,draw,inner sep=1.2pt] (char) {#1};}
 } 
 
+% 加载中文字体库
+\usepackage{zhnumber}
+
 % 阿拉伯对应中文数字的转换
+%\newcommand{\chinesenumber}[1]{%
+%	\ifcase#1 零 \or 一\or 二\or 三\or 四\or 五\or 六\or 七\or 八\or 九\or 十\fi
+%}
+
 \newcommand{\chinesenumber}[1]{%
-	\ifcase#1 零 \or 一\or 二\or 三\or 四\or 五\or 六\or 七\or 八\or 九\or 十\fi
+	\zhnumber{\number#1}
+}
+
+\newcommand{\setenumChiNum}{%
+	\setlist[enumerate,1]{%
+		itemindent=2.6em,
+		labelsep=0.25em,
+		left=1.8em,
+		itemsep=0.1em,
+	}
+}
+
+\newcommand{\itemChiNum}{%
+	\addtocounter{enumi}{1}
+	\item [\text{（\zhnumber{\arabic{enumi}}}）]
 }
 
 % 重置章节序号
@@ -224,8 +249,7 @@
 %\usepackage{algpseudocode}
 \usepackage[linesnumbered,ruled,vlined]{algorithm2e}
 
-% 画表格或者画其他东西用
-\usepackage{tikz}
+
 
 % 自定义 section 标题:第x节
 \renewcommand{\thesection}{第\chinesenumber{\value{section}}节}
@@ -233,14 +257,14 @@
 {	
 	\centering
 	\raggedright
-	\zihao{-3}
+	\zihao{3}
 }
 {}{0em}{}
 \newcommand{\DIYsection}[1]{
 	\stepcounter{section}
 	%
 	\section*{
-		\zihao{-3}
+		\zihao{3}
 		\begin{center}
 			\thesection、
 			#1
@@ -415,6 +439,7 @@ BoldFont = SimHei
 			
 			\vfill
 		\end{multicols}
+	
 	}
 	
 	\ifprint
@@ -564,7 +589,13 @@ BoldFont = SimHei
 	\DIYsection{这是“第一节”：二级标题section}
 	
 	\DIYsubsection{这是“一、”：三级标题subsection}
-
+	
+	\setenumChiNum
+	\begin{enumerate}
+		\itemChiNum 
+		这是“（一）”：四级标题，使用enumerate驱动。
+		
+	\end{enumerate}
 	
 	脚注这样标\footnote{李伟、王鑫主编：《音频音乐与计算机的交融——音频音乐技术2》，上海：复旦大学出版社，2022年，第252-270页。}。
 	
