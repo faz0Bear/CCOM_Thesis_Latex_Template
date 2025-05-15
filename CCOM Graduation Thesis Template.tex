@@ -199,15 +199,30 @@
 
 % 大写罗马页码数字计数器
 \newcounter{Romancounter}
-\newcommand{\RomannumToArabic}[1]{
-	\setcounter{Romancounter}{0}% 计数器置零
-	\foreach \i in {1, 2, 3, 4, 5, 6, 7, 8, 9, 10} {%
-		\IfStrEqCase{#1}{%
-			{\uppercase\expandafter{\romannumeral\i}}{\setcounter{Romancounter}{\i}}% 大写罗马字符 I II III IV V VI VII VIII IX X
-			{\romannumeral\i}{\setcounter{Romancounter}{\i}}% 小写罗马字符 i ii iii iv v vi vii viii ix x 
-		}[\PackageWarning{Romconvert}{Invalid input: #1}]% 非法输入
-	}
-	%\arabic{Romancounter}%
+\newcommand{\RomannumToArabic}[1]{%
+	\setcounter{Romancounter}{0}%
+	\IfStrEqCase{#1}{%
+		{i}{\setcounter{Romancounter}{1}}%
+		{ii}{\setcounter{Romancounter}{2}}%
+		{iii}{\setcounter{Romancounter}{3}}%
+		{iv}{\setcounter{Romancounter}{4}}%
+		{v}{\setcounter{Romancounter}{5}}%
+		{vi}{\setcounter{Romancounter}{6}}%
+		{vii}{\setcounter{Romancounter}{7}}%
+		{viii}{\setcounter{Romancounter}{8}}%
+		{ix}{\setcounter{Romancounter}{9}}%
+		{x}{\setcounter{Romancounter}{10}}%
+		{I}{\setcounter{Romancounter}{1}}%
+		{II}{\setcounter{Romancounter}{2}}%
+		{III}{\setcounter{Romancounter}{3}}%
+		{IV}{\setcounter{Romancounter}{4}}%
+		{V}{\setcounter{Romancounter}{5}}%
+		{VI}{\setcounter{Romancounter}{6}}%
+		{VII}{\setcounter{Romancounter}{7}}%
+		{VIII}{\setcounter{Romancounter}{8}}%
+		{IX}{\setcounter{Romancounter}{9}}%
+		{X}{\setcounter{Romancounter}{10}}%
+	}[\PackageWarning{Romconvert}{Invalid Roman numeral input: #1}]%
 }
 
 % 超链接
